@@ -1,110 +1,178 @@
-# 📑 Django-based PDF Tools  
+# 📄 PDF ToolX
 
-A modern, lightweight, and secure web app built with **Django + Bootstrap** to manage and convert PDFs with ease.  
-All tools run locally in your browser  **no file storage on the server**, ensuring privacy and security.  
+**Your PDFs. Your Control.**
 
----
+PDF ToolX is a web-based PDF utility application built with Python and Django. It provides a simple, modern interface for merging, splitting, converting, securing and extracting content from PDF documents.
 
-## ✨ Features  
+## ✨ Features
 
-- ➕ **Merge PDF** – Combine multiple PDFs into one  
-- ✂️ **Split PDF** – Extract selected pages into a new document  
-- 🖼️ **Images → PDF** – Convert images to a single PDF  
-- 📄 **PDF → Images** – Export PDF pages as images (ZIP download)  
-- 🖼️ **Extract Images** – Extract embedded images from PDFs  
-- 🔒 **Lock PDF** – Secure your file with a password  
-- 🔓 **Unlock PDF** – Remove password (with correct key)  
-- 📄➡️📝 **PDF → DOCX** – Convert PDF into an editable Word document  
+PDF ToolX provides eight useful PDF operations:
 
----
+| Feature | Description |
+|---|---|
+| ➕ Merge PDF | Combine multiple PDF files into one document. |
+| ✂️ Split PDF | Extract selected pages from a PDF. |
+| 🖼️ Images to PDF | Convert multiple images into a single PDF. |
+| 📄 PDF to Images | Convert PDF pages into images and download them as a ZIP file. |
+| 🖼️ Extract Images | Extract embedded images from PDF documents. |
+| 🔒 Lock PDF | Protect PDF files with a password. |
+| 🔓 Unlock PDF | Remove password protection using the correct password. |
+| 📝 PDF to DOCX | Convert PDF documents into editable Word files. |
 
-## 🚀 Tech Stack  
+## 🎨 Interface
 
-![Django](https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white)  
-![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)  
-![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)  
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)  
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)  
+PDF ToolX features a dark interface with emerald-green accents, designed for a clean and straightforward user experience.
 
----
+<!-- Add your application screenshots here -->
 
-## 📌 Project Overview  
+## 🛠️ Technology Stack
 
-This project is designed to make working with **PDFs** simple and efficient.  
-Whether you want to merge, split, convert, secure, or extract content, this app provides an intuitive **all-in-one platform**.  
+**Backend**
+- Python 3.14
+- Django 5.2
 
-Key goals:  
-- ✅ Privacy-first (files processed in memory, not stored)  
-- ✅ Simple, clean UI  
-- ✅ Extendable for future tools  
+**Frontend**
+- HTML5
+- CSS3
+- Bootstrap
 
----
+**PDF and Document Processing**
+- PyMuPDF
+- PyPDF2
+- pdf2docx
+- Pillow
+- python-docx
 
-## ⚙️ Installation  
+**Deployment Preparation**
+- WhiteNoise
+- Vercel
 
-Clone the repo:  
+## 📁 Project Structure
 
-```bash
-git clone https://github.com/malavika-suresh/Django-based-PDF-tools.git
-cd Django-based-PDF-tools
+```text
+PDF-Utility-Toolkit/
+│
+├── pdf_toolkit/
+│   ├── settings.py
+│   ├── urls.py
+│   ├── wsgi.py
+│   └── asgi.py
+│
+├── tools/
+│   ├── templates/
+│   │   └── tools/
+│   ├── forms.py
+│   ├── utils.py
+│   ├── views.py
+│   └── urls.py
+│
+├── static/
+├── manage.py
+├── requirements.txt
+├── .python-version
+├── .gitignore
+└── README.md
 ```
 
-Create virtual environment & install dependencies:  
+## ⚙️ Installation and Setup
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/AbdulAhad166/PDF-Utility-Toolkit.git
+cd PDF-Utility-Toolkit
+```
+
+### 2. Create a virtual environment
+
+**Windows:**
+
+```powershell
+python -m venv venv
+venv\Scripts\Activate.ps1
+```
+
+**Linux / macOS:**
 
 ```bash
 python -m venv venv
-source venv/bin/activate   # (Linux/Mac)
-venv\Scripts\activate      # (Windows)
+source venv/bin/activate
+```
 
+### 3. Install dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-Run migrations & start server:  
+### 4. Configure environment variables
+
+Create a `.env` file inside the `pdf_toolkit/` directory.
+
+Add:
+
+```env
+SECRET_KEY=your-private-django-secret-key
+DEBUG=True
+```
+
+Generate your own Django secret key. Never publish your actual secret key or commit your `.env` file to GitHub.
+
+### 5. Run database migrations
 
 ```bash
 python manage.py migrate
+```
+
+### 6. Collect static files
+
+```bash
+python manage.py collectstatic --noinput
+```
+
+### 7. Start the development server
+
+```bash
 python manage.py runserver
 ```
----
 
-## 🗂 Project Structure  
+Open the application:
 
-```
-Django-based-PDF-tools/
-│── tools/                 # Core PDF tool app
-│   ├── templates/tools/   # HTML templates
-│   ├── forms.py           # Tool forms
-│   ├── utils.py           # PDF processing utilities
-│   ├── urls.py            # URL routing
-│   └── views.py           # Business logic
-│
-│── static/                # CSS, JS, images
-│── manage.py              # Django entry point
-│── requirements.txt       # Python dependencies
-└── README.md              # Project docs
-```
+http://127.0.0.1:8000/
 
----
+## 🚀 Deployment
 
-## 🔮 Future Enhancements  
+PDF ToolX is being prepared for deployment on Vercel.
 
-- 📌 **PDF Compression** – Reduce file size  
-- 📌 **Reorder Pages** – Drag-and-drop pages in a PDF  
-- 📌 **Add Watermark** – Text or image watermark  
-- 📌 **Dark Mode UI** – Better user experience  
-- 📌 **Docker Support** – Easy deployment  
+Deployment requires appropriate environment variables, static-file configuration and a compatible strategy for PDF uploads, processing and downloads.
 
----
+Large file uploads require special consideration because of serverless platform request and response limits.
 
-## 🙌 Acknowledgements  
+## 🔮 Future Enhancements
 
-- [PyPDF2](https://pypi.org/project/pypdf2/) – for PDF manipulation  
-- [pdf2docx](https://pypi.org/project/pdf2docx/) – for PDF → DOCX conversion  
-- [Bootstrap](https://getbootstrap.com/) – UI components  
-- [Django](https://www.djangoproject.com/) – backend framework  
+- 📌 PDF Compression
+- 📌 Reorder PDF Pages
+- 📌 Add Watermarks
+- 📌 Additional PDF editing tools
+- 📌 Improved file-handling and cloud-storage support
 
----
+## 🙌 Acknowledgements
 
-## 📜 License  
+This project is based on the original Django-based PDF Tools project by **Malavika Suresh**.
 
-MIT License © 2025 [Malavika Suresh](https://github.com/malavika-suresh)  
+Thanks to the original developer and the open-source communities behind:
+
+- [Django](https://www.djangoproject.com/)
+- [PyMuPDF](https://pymupdf.readthedocs.io/)
+- [PyPDF2](https://pypi.org/project/PyPDF2/)
+- [pdf2docx](https://pypi.org/project/pdf2docx/)
+- [Pillow](https://pypi.org/project/pillow/)
+- [Bootstrap](https://getbootstrap.com/)
+
+## 📜 License
+
+This project retains the original MIT License and copyright attribution.
+
+Copyright (c) 2025 Malavika Suresh.
+
+See the [LICENSE](LICENSE) file for details.
