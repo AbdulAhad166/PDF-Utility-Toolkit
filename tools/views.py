@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.core.files.storage import FileSystemStorage
 from pdf2docx import Converter
+import tempfile
 
 from .forms import (
     MergePDFForm, SplitPDFForm, ImagesToPDFForm, PDFToImagesForm,
@@ -154,11 +155,8 @@ def unlock_pdf_view(request):
 
 
 def pdf_to_docx_view(request):
-    if request.method == "POST" and request.FILES["pdf_file"]:
+    if request.method == "POST" and request.FILES.get("pdf_file"):
         pdf_file = request.FILES["pdf_file"]
-        fs = FileSystemStorage()
-        pdf_path = fs.save(pdf_file.name, pdf_file)
-        pdf_path = fs.path(pdf_path)
 
         # Get user options
         start_page = int(request.POST.get("start_page", 0))
@@ -169,18 +167,42 @@ def pdf_to_docx_view(request):
 
         # Output filename
         docx_filename = os.path.splitext(pdf_file.name)[0] + ".docx"
-        docx_path = fs.path(docx_filename)
 
-        # Convert
-        cv = Converter(pdf_path)
-        cv.convert(docx_path, start=start_page, end=end_page,
-                   image=extract_images, tables=detect_tables)
-        cv.close()
+        # Use Vercel's writable temporary directory
+        with tempfile.TemporaryDirectory() as temp_dir:
+            pdf_path = os.path.join(temp_dir, os.path.basename(pdf_file.name))
+            docx_path = os.path.join(temp_dir, docx_filename)
 
-        # Return file as response
-        with open(docx_path, "rb") as f:
-            response = HttpResponse(f.read(), content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-            response["Content-Disposition"] = f'attachment; filename="{docx_filename}"'
-            return response
+            # Save uploaded PDF temporarily
+            with open(pdf_path, "wb") as f:
+                for chunk in pdf_file.chunks():
+                    f.write(chunk)
+
+            # Convert PDF to DOCX
+            cv = Converter(pdf_path)
+            try:
+                cv.convert(
+                    docx_path,
+                    start=start_page,
+                    end=end_page,
+                    image=extract_images,
+                    tables=detect_tables
+                )
+            finally:
+                cv.close()
+
+            # Read converted DOCX before temporary folder is deleted
+            with open(docx_path, "rb") as f:
+                docx_content = f.read()
+
+        # Return DOCX file
+        response = HttpResponse(
+            docx_content,
+            content_type="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        )
+        response["Content-Disposition"] = (
+            f'attachment; filename="{docx_filename}"'
+        )
+        return response
 
     return render(request, "tools/pdf_to_docx.html")
