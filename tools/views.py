@@ -20,19 +20,36 @@ from .utils import (
 def index(request):
     return render(request, "tools/index.html")
 
+
 @require_http_methods(["GET", "POST"])
 def merge_pdf_view(request):
     if request.method == "POST":
         form = MergePDFForm(request.POST, request.FILES)
+
         if form.is_valid():
-            files = request.FILES.getlist("files")
+            files = form.cleaned_data["files"]
+
             if len(files) < 2:
-                return HttpResponseBadRequest("Upload at least two PDFs.")
-            data = merge_pdfs(files)
-            return http_attachment("merged.pdf", data, "application/pdf")
+                form.add_error(
+                    "files",
+                    "Please select at least two PDF files."
+                )
+            else:
+                try:
+                    data = merge_pdfs(files)
+                    return http_attachment(
+                        "merged.pdf",
+                        data,
+                        "application/pdf"
+                    )
+                except Exception as e:
+                    form.add_error(None, str(e))
+
     else:
         form = MergePDFForm()
+
     return render(request, "tools/merge.html", {"form": form})
+
 
 @require_http_methods(["GET", "POST"])
 def split_pdf_view(request):

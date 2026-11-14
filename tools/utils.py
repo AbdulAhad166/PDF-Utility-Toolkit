@@ -2,10 +2,9 @@ from io import BytesIO
 from zipfile import ZipFile, ZIP_DEFLATED
 from typing import List, Tuple
 import hashlib
-import fitz  # PyMuPDF
+import pymupdf  # PyMuPDF
 from PyPDF2 import PdfReader, PdfWriter
 from PIL import Image
-import fitz  # PyMuPDF
 from pdf2docx import Converter
 
 def convert_pdf_to_docx(pdf_path, docx_output, start=0, end=None, extract_images=True, detect_tables=True):
@@ -84,7 +83,7 @@ def images_to_pdf_bytes(image_files) -> bytes:
 
 # --- PDF -> page images (PNG), zipped ---
 def pdf_to_images_zip(file) -> Tuple[bytes, int]:
-    doc = fitz.open(stream=file.read(), filetype="pdf")
+    doc = pymupdf.open(stream=file.read(), filetype="pdf")
     mem = BytesIO()
     with ZipFile(mem, "w", ZIP_DEFLATED) as zf:
         for i, page in enumerate(doc, start=1):
@@ -102,7 +101,7 @@ def extract_images_zip(file, *, dedupe: bool = True) -> Tuple[bytes, int, int]:
     """
     # PyMuPDF needs a bytes stream; read once
     pdf_bytes = file.read()
-    doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+    doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
 
     mem = BytesIO()
     saved = 0

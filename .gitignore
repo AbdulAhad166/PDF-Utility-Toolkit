@@ -25,3 +25,18 @@ staticfiles/
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Generated PDF and DOCX files
+*.pdf
+*.docx
+*.zip
+
+
+# Test and coverage files
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Temporary files
+*.tmp
+*.temp

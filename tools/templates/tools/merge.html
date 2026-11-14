@@ -1,10 +1,29 @@
+
 {% extends 'tools/base.html' %}
+
+{% block title %}Merge PDF | PDF ToolX{% endblock %}
+
 {% block content %}
-<h2 class="mb-3">Merge PDF</h2>
-<form method="post" enctype="multipart/form-data" class="card p-4">
+
+<h2 class="mb-3 text-white">Merge PDF</h2>
+
+<form method="post" enctype="multipart/form-data" class="card p-4 shadow-sm">
+
   {% csrf_token %}
+
   {{ form.as_p }}
-  <button class="btn btn-primary" type="submit">Merge</button>
-  <a class="btn btn-outline-light ms-2" href="/">Back</a>
+
+  <div class="mt-3">
+    <button class="btn btn-primary" type="submit">
+      <i class="bi bi-files me-1"></i> Merge PDF
+    </button>
+
+    <a class="btn btn-outline-light ms-2" href="{% url 'tools:index' %}">
+      Back
+    </a>
+  </div>
+
 </form>
+
 {% endblock %}
+
